@@ -298,6 +298,13 @@ class Sale(ModelBase):
         db_column='id_branch',
         null=False
     )
+    total = models.DecimalField(
+        db_column='nb_total',
+        null=False,
+        max_digits=16,
+        decimal_places=2,
+        default=0.00
+    )
 
     class Meta:
         db_table = 'sale'

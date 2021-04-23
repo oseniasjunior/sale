@@ -29,4 +29,60 @@ class CityViewSet(ViewSetBase):
     serializer_class = serializers.CitySerializer
     filter_class = filters.CityFilter
     ordering_fields = '__all__'
-    ordering = ('id',)
+    ordering = ('-id',)
+
+
+class DistrictViewSet(ViewSetBase):
+    queryset = models.District.objects.all()
+    serializer_class = serializers.DistrictSerializer
+    filter_class = filters.CityFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)
+
+
+class DepartmentViewSet(ViewSetBase):
+    queryset = models.Department.objects.all()
+    serializer_class = serializers.DepartmentSerializer
+    # filter_class = filters.CityFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)
+
+
+class MaritalStatusViewSet(ViewSetBase):
+    queryset = models.MaritalStatus.objects.all()
+    serializer_class = serializers.MaritalStatusSerializer
+    # filter_class = filters.CityFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)
+
+
+class EmployeeViewSet(ViewSetBase):
+    queryset = models.Employee.objects.all()
+    serializer_class = serializers.EmployeeSerializer
+    filter_class = filters.EmployeeFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)
+
+
+class ProductGroupViewSet(ViewSetBase):
+    queryset = models.ProductGroup.objects.all()
+    serializer_class = serializers.ProductGroupSerializer
+    # filter_class = filters.EmployeeFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)
+
+
+class ProductViewSet(ViewSetBase):
+    queryset = models.Product.objects.all()
+    serializer_class = serializers.ProductSerializer
+    filter_class = filters.ProductFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)
+
+
+class SupplierViewSet(ViewSetBase):
+    queryset = models.Supplier.objects.all()
+    serializer_class = serializers.SupplierSerializer
+    # filter_class = filters.EmployeeFilter
+    ordering_fields = '__all__'
+    ordering = ('-id',)

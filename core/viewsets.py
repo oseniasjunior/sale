@@ -1,6 +1,8 @@
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
-from core import models, serializers, mixins, filters
+from core import models, serializers, mixins, filters, tasks
 
 
 class ViewSetBase(viewsets.ModelViewSet, mixins.ViewSetExpandMixin):
@@ -78,6 +80,13 @@ class ProductViewSet(ViewSetBase):
     filter_class = filters.ProductFilter
     ordering_fields = '__all__'
     ordering = ('-id',)
+
+    @action(methods=['GET'], detail=False)
+    def test_celery(self, request, *args, **kwargs):
+        param = int(100 * 2)
+        tasks.process_long_task.apply_async([param], countdown=1)
+        # tasks.process_long_task()
+        return Response(status=200)
 
 
 class SupplierViewSet(ViewSetBase):

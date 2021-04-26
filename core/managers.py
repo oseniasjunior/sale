@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Count, Case, When, Value, CharField, ExpressionWrapper, F, Sum, FloatField
+from django.db.models import Count, Case, When, Value, CharField, ExpressionWrapper, F, Sum, FloatField, DecimalField
 
 
 class CustomerManager(models.Manager):
@@ -44,3 +44,11 @@ class SaleItemManager(models.Manager):
         ).values('sale__employee__name').annotate(
             total=Sum('commission_group', output_field=FloatField())
         ).values('sale__employee__name', 'total')
+
+    def subtotal(self, sale_item_id: int):
+        result = self.filter(pk=sale_item_id).annotate(
+            subtotal=ExpressionWrapper(F('quantity') * F('product__sale_price'), output_field=DecimalField())
+        ).values('subtotal').first()
+        if result is not None:
+            return result.get('subtotal')
+        return 0

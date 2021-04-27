@@ -1,0 +1,23 @@
+version: '3'
+services:
+
+  api:
+    image: sale-backend
+    ports:
+      - 9000:8000
+    working_dir: /usr/src/app
+    command: /bin/sh -c "python manage.py runserver 0.0.0.0:8000"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [ APP=API ]
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+
+networks:
+  default:
+    external:
+      name: sale

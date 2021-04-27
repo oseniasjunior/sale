@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  redis:
+    image: redis
+    ports:
+    - 6379:6379
+    deploy:
+      labels: [APP=REDIS]
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+
+networks:
+  default:
+    external:
+      name: sale

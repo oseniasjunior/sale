@@ -17,6 +17,34 @@ services:
         max_attempts: 3
         window: 120s
 
+  worker_default:
+    image: sale-backend
+    working_dir: /usr/src/app
+    command: /bin/sh -c "python wait.py redis 6379 180 && python -u -m celery -A sale worker --loglevel INFO --pool=gevent -Q default"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [ APP=WORKER_DEFAULT ]
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+
+  worker_schedule_task:
+    image: sale-backend
+    working_dir: /usr/src/app
+    command: /bin/sh -c "python wait.py redis 6379 180 && python -u -m celery -A sale worker -B --loglevel INFO --pool=solo -Q schedule_task"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [ APP=WORKER_SCHEDULE_TASK ]
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+
 networks:
   default:
     external:

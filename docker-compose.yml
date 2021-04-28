@@ -6,7 +6,7 @@ services:
     ports:
       - 9000:8000
     working_dir: /usr/src/app
-    command: /bin/sh -c "python manage.py runserver 0.0.0.0:8000"
+    command: /bin/sh -c "python -u manage.py migrate && python production-server.py --port=8000"
     deploy:
       mode: replicated
       replicas: 1

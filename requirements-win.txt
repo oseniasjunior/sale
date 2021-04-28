@@ -1,1 +1,2 @@
 pywin32==300
+twisted-iocpsupport==1.0.1

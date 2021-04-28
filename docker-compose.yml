@@ -2,7 +2,7 @@ version: '3'
 services:
 
   api:
-    image: sale-backend
+    image: sale
     ports:
       - 9000:8000
     working_dir: /usr/src/app
@@ -18,7 +18,7 @@ services:
         window: 120s
 
   worker_default:
-    image: sale-backend
+    image: sale
     working_dir: /usr/src/app
     command: /bin/sh -c "python wait.py redis 6379 180 && python -u -m celery -A sale worker --loglevel INFO --pool=gevent -Q default"
     deploy:
@@ -32,7 +32,7 @@ services:
         window: 120s
 
   worker_schedule_task:
-    image: sale-backend
+    image: sale
     working_dir: /usr/src/app
     command: /bin/sh -c "python wait.py redis 6379 180 && python -u -m celery -A sale worker -B --loglevel INFO --pool=solo -Q schedule_task"
     deploy:

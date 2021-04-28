@@ -11,11 +11,17 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from corsheaders.defaults import default_methods
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+conf_file = os.path.join(BASE_DIR, 'sale.conf')
+
+if os.path.exists(conf_file):
+    load_dotenv(conf_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -81,11 +87,11 @@ WSGI_APPLICATION = 'sale.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sale',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'USER': 'postgres',
-        'PASSWORD': '123456'
+        'NAME': os.environ.get('DB_NAME'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD')
     }
 }
 
@@ -173,5 +179,5 @@ CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = os.environ.get('REDIS_HOST')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_HOST')

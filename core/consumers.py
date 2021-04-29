@@ -30,3 +30,13 @@ class ChatConsumer(ConsumerBase):
 
     def get_group_name(self):
         return 'chat'
+
+    async def receive_json(self, event, **kwargs):
+        print(event)
+        await self.channel_layer.group_send(
+            self.get_group_name(),
+            {
+                'type': 'group.message',
+                'content': event.get('content')
+            }
+        )
